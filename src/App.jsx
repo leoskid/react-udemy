@@ -1,13 +1,15 @@
 import "./App.css";
 import Card from "./components/Card/Card";
-import Contatore from "./components/Contatatore/Contatore";
+import Portals from "./components/Portals/Portals";
+import ErrorBondaries from "./components/Error-bondaries/Error_bondaries";
 
 function App() {
 	return (
 		<div className="App">
-			<Card testo="Ciao Come va?">
-				<Contatore></Contatore>
-			</Card>
+			<ErrorBondaries>
+				<Card testo="Ciao come va?"></Card>
+			</ErrorBondaries>
+			<Portals></Portals>
 		</div>
 	);
 }
