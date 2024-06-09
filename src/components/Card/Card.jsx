@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Contatore from "../Contatore/Contatore";
 import "./Card.scss";
 import Utenti from "../Utenti/Utenti";
@@ -6,48 +6,34 @@ import Loader from "../Loading/Loader";
 
 const UtentiLoader = Loader(Utenti);
 
-class Card extends React.Component {
-	constructor(props) {
-		super(props);
+const Card = ({ testo }) => {
+	const [users, setUsers] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [errore, setErrore] = useState(false);
 
-		this.state = {
-			users: [],
-			loading: true,
-			errore: false,
-		};
-	}
-
-	componentDidMount() {
+	useEffect(() => {
 		fetch("https://jsonplaceholder.typicode.com/users")
 			.then((response) => response.json())
 			.then((values) => {
-				this.setState({
-					users: values,
-					loading: false,
-				});
+				setUsers(values);
+				setLoading(false);
 			})
 			.catch((dati) => {
-				console.log(dati);
-				this.setState({ errore: true });
+				setErrore(true);
 			});
-	}
+	}, []);
 
-	render() {
-		if (this.state.errore) {
-			throw Error();
-		}
-		const { testo } = this.props;
-		return (
-			<div className="card d-flex align-items-center">
-				{testo}
-				<Contatore></Contatore>
-				<UtentiLoader
-					users={this.state.users}
-					loading={this.state.loading}
-				></UtentiLoader>
-			</div>
-		);
-	}
-}
+	useEffect(() => {
+		if (errore) throw Error();
+	});
+
+	return (
+		<div className="card d-flex align-items-center">
+			{testo}
+			<Contatore></Contatore>
+			<UtentiLoader users={users} loading={loading}></UtentiLoader>
+		</div>
+	);
+};
 
 export default Card;
