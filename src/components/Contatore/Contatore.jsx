@@ -1,8 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./Contatore.scss";
+import { useTheme } from "../../contexts/theme-context";
 
 const Contatore = () => {
+	const darkButton = {
+		backgroundColor: "#333333",
+		color: "#EEEEEE",
+	};
+
+	const lightButton = {
+		backgroundColor: "#EEEEEE",
+		color: "#333333",
+	};
 	const [conto, setConto] = useState(0);
+
+	const { darkTheme, setTheme } = useTheme();
+
 	const incrementa = () => {
 		setConto((conto) => conto + 1);
 	};
@@ -46,13 +59,16 @@ const Contatore = () => {
 			{conto >= 5 ? <div style={red}>Wow!!!</div> : null}
 			<div className="contatore-button-container d-flex justify-content-between">
 				<button
+					style={darkTheme ? darkButton : lightButton}
 					type="button"
 					className="contatore-button m-1 d-flex"
 					onClick={decrementa}
 				>
 					Decrementa
 				</button>
+
 				<button
+					style={darkTheme ? darkButton : lightButton}
 					type="button"
 					ref={inputEl}
 					className="contatore-button m-1 d-flex"
@@ -61,6 +77,7 @@ const Contatore = () => {
 					Incrementa
 				</button>
 			</div>
+			<button onClick={setTheme}>Cambia colore</button>
 		</div>
 	);
 };
